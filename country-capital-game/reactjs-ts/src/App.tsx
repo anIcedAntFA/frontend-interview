@@ -53,6 +53,7 @@ function App() {
   const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
 
   const isRunningRef = useRef<boolean>(false);
+  const timeoutRef = useRef<number | null>(null);
 
   // const updateStatuses = (indexes: number[], status: Status) => {
   //   setStatuses((prev) => {
@@ -96,7 +97,9 @@ function App() {
 
       updateStatuses(newSelectedIndexes, isMatched ? 'correct' : 'wrong');
 
-      setTimeout(() => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+      timeoutRef.current = setTimeout(() => {
         isRunningRef.current = false;
         updateStatuses(newSelectedIndexes, isMatched ? 'done' : 'idle');
         setSelectedIndexes([]);
